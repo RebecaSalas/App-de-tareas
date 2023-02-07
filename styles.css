@@ -1,0 +1,308 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+
+:root {
+    --red: #f01a0b;
+    --white: #fff;
+    --black: #000;
+    --pink: #eea0a0;
+}
+
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    margin: 0;
+    height: 100vh;
+    background-color: var(--pink);
+}
+
+.dark{
+    background-color: var(--red);
+}
+
+
+header{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    color: rgb(14, 13, 13);
+    font-size: 18px;
+    height: 6rem;
+    width: 100vw;
+    padding: 10px;
+    line-height: 0px;
+    background-image: url("imagenes/imagen-tarea.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-size: 100% 100%;
+    opacity: 0.8;
+}
+
+
+
+h1 {
+    margin-top: 25px;
+}
+
+.modo {
+    display: flex;
+    justify-content: center;
+    text-align: right;
+    background-color: var(--pink);
+    border: none;
+    color: black;
+    box-shadow: 0 0 15px 5px var(--pink);
+    height: 15px;
+    padding: 0 5px;
+    border-radius: 5px;
+    font-size: 10px;
+    margin-top: 35px;
+}
+
+.section-create{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-wrap: wrap;
+    padding-top: 120px;
+    position: fixed;
+}
+
+#btn-filterPendient,
+#btn-filterInProgress,
+#btn-filterFinish,
+#btn-all{
+    cursor: pointer;
+    display: flex;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    color: rgb(255, 255, 255);
+    text-align: left;
+    text-decoration-color: rgb(255, 255, 255);
+    text-decoration-line: none;
+    text-decoration-style: solid;
+    background-color: var(--red);
+    border-radius: 100px;
+    border: none;
+    box-sizing: border-box;
+    line-height: 20px;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 0px;
+    height: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+
+#open, 
+#close {
+   border-radius: 5px;
+   border: none;
+   background-color: var(--black);
+   color: white;
+   padding-right: 10px;
+   
+
+}
+
+
+
+/* Lista de tareas */
+section{
+    display: flex;
+    justify-content:center;
+    text-align: center;
+    padding: 10px 60px 200px;
+}
+
+
+*:first-letter {
+    text-transform: capitalize;
+}
+
+.roundBorder {
+    border-radius: 5px;
+}
+
+.list {
+    margin: 100px auto;
+    padding: 25px;
+    background-color: var(--white);
+    width: 150%;
+    max-width: 450px;
+    background-image: url("imagenes/imagen-tarea.jpg");
+
+}
+
+.date {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dateRight {
+    display: flex;
+    align-items: center;
+}
+
+#dateNumber {
+    font-size: 50px;
+}
+
+#dateText {
+    letter-spacing: 3px;
+    text-transform: uppercase;
+}
+
+#dateMonth,
+#dateNumber,
+#dateText  {
+    font-weight: bold;
+}
+
+#dateMonth,
+#dateYear {
+    margin-left: 7px;
+    font-size: 20px;
+}
+
+/* form {
+    margin: 20px 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: auto 35px auto;
+    grid-column-gap: 15px;
+}
+
+input {
+    border: none;
+    padding-left: 10px;
+    background-color: var(--diabled);
+}
+
+input:focus {
+    outline: none;
+}
+
+
+/*AGREGAR TAREA*/
+
+.agregar-tarea {
+    background-color: var(--white) ;
+    border-radius: 15px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    gap: 70px;
+    padding: 10px;
+    margin: 40px 0;
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: auto 35px auto;
+    grid-column-gap: 15px;
+}
+
+.agregar-tarea input {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--white);
+    padding-left: 10px;
+}
+
+
+.agregar-tarea input::placeholder {
+   font-size: 1rem;
+   color: var(--black);
+}
+
+
+.orderButton {
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+
+
+.agregar-tarea i{
+    font-size: 50px;
+    color: var(--red);
+
+}
+.agregar-tarea i:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+
+
+/*SECCION DE TAREA */
+
+
+.seccion-tarea li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--red);
+    border-radius: 15px;
+    padding: 10px;
+    color: var(--white);
+    margin: 5px 0;
+
+}
+.seccion-tarea i {
+    font-size: 25px;
+}
+
+.seccion-tarea > ul p {
+    font-size: 1.2rem;
+
+}
+
+
+.seccion-tarea i:hover {
+    color: var(--black);
+    cursor: pointer;
+}
+
+.line-through{
+    text-decoration: line-through;
+    color : var(--black);
+}
+
+.show {
+    pointer-events: auto;
+    opacity: 1;
+}
+
+/* Responsive */
+
+@media (min-width: 1200px) {
+    header {
+      display: flex;
+    }
+  }
+  
+  @media (max-width: 600px) {
+    h1{
+      font-size: 26px;
+    } 
+    header {
+      width: 100%;
+    }
+  }
