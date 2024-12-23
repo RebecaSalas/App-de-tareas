@@ -1,6 +1,6 @@
 # Aplicación de Tareas 😂
 
-(![app-de-tareas]![app-de-tareas](https://github.com/user-attachments/assets/b5efb5fc-8e85-43d0-a612-b082a70b3070)
+(![app-de-tareas](https://github.com/user-attachments/assets/b5efb5fc-8e85-43d0-a612-b082a70b3070)
 
 
 Esta es una aplicación de tareas sencilla que permite a los usuarios agregar, editar, eliminar y ordenar tareas.
