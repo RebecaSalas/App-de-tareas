@@ -17,6 +17,11 @@ window.onload = () => {
     const $botonCerrar = $(".cerrar"); // Edición de Tareas
     const $botonGuardarCambios = $("button[onclick='guardar-cambios()']"); // Edición de Tareas
 
+    // .........................................Inicio de variables............................................................
+
+    let LIST = [];
+    let id = 0;
+
     // ....................................................Inicio de Funciones....................................................
 
     // Función para cambiar entre modo claro y oscuro
@@ -172,7 +177,7 @@ window.onload = () => {
     // Evento para ordenar las tareas alfabéticamente
     $botonOrdenar.addEventListener("click", ordenarTareas);
 
-    // Eventos para manejar la edición de tarea
+    //  Eventos para manejar la edición de tarea
     $botonCerrar.addEventListener("click", cerrarModal);
     $botonGuardarCambios.addEventListener("click", guardarCambios);
     window.addEventListener("click", function (event) {
@@ -181,7 +186,7 @@ window.onload = () => {
         }
     });
 
-    // Evento para detectar acciones en la lista (editar o eliminar)
+    //  Evento para detectar acciones en la lista (editar o eliminar)
     $lista.addEventListener("click", function (event) {
         const elemento = event.target;
         const idElemento = parseInt(elemento.dataset.id, 10);
