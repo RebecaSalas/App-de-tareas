@@ -1,117 +1,91 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <link rel="stylesheet" href="styles.css" />
-    <link
-      rel="icon"
-      type="imagenes/png"
-      href="./imagenes/RS_Dseñadora web.png"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
-      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
-      integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
-      integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="styles.css" />
+        <link
+            rel="icon"
+            type="imagenes/png"
+            href="./imagenes/RS_Dseñadora web.png"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+            integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+            integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"
+            integrity="sha512-01CJ9/g7e8cUmY0DFTMcUw/ikS799FHiOA0eyHsUWfOetgbx/t6oV4otQ5zXKQyIrQGTHSmRVPIgrgLcZi/WMA=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
 
-    <title>App de Tareas</title>
-  </head>
+        <title>App de Tareas</title>
+    </head>
 
-  <body class="body">
-    <header>
-      <h1>App de tareas</h1>
-      <div>
-        <button class="modo"><i class="fa-solid fa-lightbulb"></i></button>
-      </div>
-    </header>
+    <body class="cuerpo">
+        <!-- Modo claro/Oscuro -->
+        <header>
+            <h1>App de tareas</h1>
+            <button class="modo"><i class="fa-solid fa-lightbulb"></i></button>
+        </header>
+        <!-- Contenedor de tareas -->
+        <main class="contenedor">
+            <section>
+                <div class="agregar-tarea">
+                    <input
+                        type="text"
+                        id="entrada"
+                        placeholder="Agregar tarea"
+                    />
+                    <button type="button" id="boton-agregar">
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
+                    <button type="button" id="boton-ordenar">
+                        <i class="fa-solid fa-arrow-up-a-z"></i>
+                    </button>
+                </div>
 
-    <!-- Lista de tareas -->
-
-    <section class="section-create">
-      <div>
-      <button id="open">Crear</button>
-      <button id="close">Cerrar</button>
-      </div>
-      <div class="estado">
-        <button id="btn-filterPendient">Pendiente</button>
-        <button id="btn-filterInProgress">En progreso</button>
-        <button id="btn-filterFinish">Terminado</button>
-        <button id="btn-all">Todos</button>
-      </div>
-    </section>
-
-    <section class="contain-modal" id="modal_container">
-      <div class="modal">
-       
-
-        <div class="list roundBorder">
-          <div class="date">
-            <div class="dateRight">
-              <div id="dateNumber"></div>
-              <div>
-                <div id="dateMonth"></div>
-                <div id="dateYear"></div>
-              </div>
+                <div class="seccion-tarea">
+                    <ul class="lista"></ul>
+                </div>
+            </section>
+        </main>
+        <!-- Modal -->
+        <div id="modal" class="modal">
+            <div class="contenido-modal">
+                <span class="cerrar" onclick="cerrar-modal()">×</span>
+                <h2>Editar tarea</h2>
+                <label for="titulo-editar">Título de la tarea:</label>
+                <input type="text" id="titulo-editar" />
+                <label for="descripcion-editar">Descripción de la tarea:</label>
+                <input type="text" id="descripcion-editar" />
+                <label for="estado-editar">Estado de la tarea:</label>
+                <select id="estado-editar">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="En Progreso">En progreso</option>
+                    <option value="Completada">Completada</option>
+                </select>
+                <button onclick="guardar-cambios()">Guardar</button>
             </div>
-            <div id="dateText"></div>
-          </div>
-   
-            <!-- <select id="state">
-              <option value="" disabled selected></option>
-              <option value="Pendientes"></option>
-              <option value="En progreso"></option>
-              <option value="Terminado"></option>
-              <span id="stateErrors"></span>
-            </select> -->
-          
-
-          <div class="container">
-      
-        
-            <div class="agregar-tarea">
-                <input type="text" id="input" placeholder="Agregar tarea">
-                <i id="boton-enter"class="fas fa-plus-circle"></i>
-                <i id="boton-ordenar"class="fa-solid fa-arrow-up-a-z"></i></button>
-            </div>
-        
-            
-            <div class="seccion-tarea">
-                <ul id="lista">
-                    <li id="elemento">
-                        <i class="far fa-circle co" data="realizado" id="0"></i>
-                        <p class="text"> Estructurar html </p>
-                        <i class="fas fa-trash de" data="eliminado" id="0"></i>
-                        <i class="fa-sharp fa-solid fa-pen-to-square"data="editado" id="0"></i>
-                    </li>
-                    <li id="elemento">
-                        <i class="far fa-circle co" data="realizado" id="0"></i>
-                        <p class="text"> Programar js </p>
-                        <i class="fas fa-trash de" data="eliminado" id="0"></i> 
-                        <i class="fa-sharp fa-solid fa-pen-to-square"data="editado" id="0"></i>
-                    </li>
-                </ul>
-            </div>   
-          </div> 
-
         </div>
-         <div id="tasksContainer"></div>
-      </div>
-    </section>
-    <script src="app.js"></script>
-</body>
+
+        <!-- Iconos de estado de las tareas -->
+        <div id="iconos" style="display: none">
+            <i id="icono-pendiente" class="fas fa-hourglass-start"></i>
+            <i id="icono-en-progreso" class="fas fa-spinner"></i>
+            <i id="icono-completada" class="fas fa-check-circle"></i>
+        </div>
+
+        <script src="app.js"></script>
+    </body>
 </html>

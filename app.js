@@ -1,344 +1,205 @@
-//Tareas
+// Evento que asegura la funcionalidad al cargar HTML
+window.onload = () => {
+    // Función que selecciona un elemento
+    const $ = (selector) => document.querySelector(selector);
 
-const tareas = [
-{
-  Titulo: "Estructurar html",
-  Estado: "Realizado",
-},
-{
-  Titulo: "Diseñar css",
-  Estado: "En progreso",
-},
-{
-  Titulo: "Interacturar js",
-  Estado: "Pendiente",
-},
-  {
-  Titulo: "Programar js",
-  Estado: "En progreso",
-},
-];
-  
-  console.log(tareas);
+    // .........................................Inicio de selecciones de elementos.........................................
+    const $cuerpo = $(".cuerpo"); // Modo Oscuro
+    const $botonModo = $(".modo"); // Modo Oscuro
+    const $lista = $(".lista"); // Manejo de Tareas
+    const $entrada = $("#entrada"); // Manejo de Tareas
+    const $botonAgregar = $("#boton-agregar"); // Manejo de Tareas
+    const $botonOrdenar = $("#boton-ordenar"); // Manejo de Tareas
+    const $modal = $("#modal"); // Edición de Tareas
+    const $tituloEditar = $("#titulo-editar"); // Edición de Tareas
+    const $descripcionEditar = $("#descripcion-editar"); // Edición de Tareas
+    const $estadoEditar = $("#estado-editar"); // Edición de Tareas
+    const $botonCerrar = $(".cerrar"); // Edición de Tareas
+    const $botonGuardarCambios = $("button[onclick='guardar-cambios()']"); // Edición de Tareas
 
+    // ....................................................Inicio de Funciones....................................................
 
-// Modo oscuro
-const $buttonModo = document.querySelector(".modo")
-const $body = document.querySelector(".body")
-
-$buttonModo.addEventListener("click", (e) => {
-    $body.classList.toggle("dark")
-})
-
-
-
-// Fecha
-const dateNumber = document.getElementById('dateNumber');
-const dateText = document.getElementById('dateText');
-const dateMonth = document.getElementById('dateMonth');
-const dateYear = document.getElementById('dateYear');
-
-// Tasks Container
-const tasksContainer = document.getElementById('tasksContainer');
-
-const setDate = () => {
-    const date = new Date();
-    dateNumber.textContent = date.toLocaleString('es', { day: 'numeric' });
-    dateText.textContent = date.toLocaleString('es', { weekday: 'long' });
-    dateMonth.textContent = date.toLocaleString('es', { month: 'short' });
-    dateYear.textContent = date.toLocaleString('es', { year: 'numeric' });
-};
-
-
-const lista = document.querySelector('#lista')
-const elemento = document.querySelector('#elemento')
-const input = document.querySelector('#input')
-const botonEnter = document.querySelector('#boton-enter')
-const botonOrdenar = document.querySelector('#boton-ordenar')
-
-const check = 'fa-check-circle'
-const uncheck = 'fa-circle'
-const lineThrough = 'line-through'
-let LIST
-
-let id 
-
-
-// funcion de agregar tarea 
-
-function agregarTarea( tarea,id,realizado,eliminado,editado) {
-    if(eliminado) {return} // si existe eliminado es true si no es false 
-    if(editado) {return} // si existe editado es true si no es false 
-
-
-    const EDITADO = editado
-    const REALIZADO = realizado ? check : uncheck // si realizado es verdadero check si no uncheck
-
-    const LINE = realizado ? lineThrough : '' 
-
-    const elemento = `
-                        <li id="elemento">
-                        <i class="far ${REALIZADO}" data="realizado" id="${id}"></i>
-                        <i class="far ${EDITADO}" data="editado" id="${id}"></i>
-                        <p class="text ${LINE}">${tarea}</p>
-                        <i class="fas fa-trash de" data="eliminado" id="${id}"></i>
-                        <i class="fa-sharp fa-solid fa-pen-to-square"data="editado" id="${id}"></i>
-                        </li>
-                    `
-    lista.insertAdjacentHTML("beforeend",elemento)
-
-}
-
-
-// funcion de Tarea Realizada, eliminada y editada 
-
-function tareaRealizada(element) {
-    element.classList.toggle(check)
-    element.classList.toggle(uncheck)
-    element.parentNode.querySelector('.text').classList.toggle(lineThrough)
-    LIST[element.id].realizado = LIST[element.id].realizado ?false :true //Si
-  
-}
-
-function tareaEliminada(element){
- 
-    element.parentNode.parentNode.removeChild(element.parentNode)
-    LIST[element.id].eliminado = true
-    console.log(LIST)
-}
-
-
-function tareaEditada(element){
-
-     element.parentNode.parentNode.appendChild(element.parentNode)
-     LIST[element.id].editado = true
-     console.log(LIST)
- }
- 
-
-
-// Evento para habilitar botones
-
-botonEnter.addEventListener('click', ()=> {
-    const tarea = input.value
-    if(tarea){
-        agregarTarea(tarea,id,false,false)
-        LIST.push({
-            nombre : tarea,
-            id : id,
-            realizado : false,
-            eliminado : false,
-            editado: false
-        })
-        localStorage.setItem('TODO',JSON.stringify(LIST))
-        id++
-        input.value = ''
+    // Función para cambiar entre modo claro y oscuro
+    function cambiarModo() {
+        $cuerpo.classList.toggle("oscuro");
     }
 
-})
+    // Validar entrada de datos
+    function validarEntrada(texto) {
+        return (
+            texto.trim() !== "" && !LIST.some((tarea) => tarea.titulo === texto)
+        );
+    }
 
+    // Función para obtener el icono según el estado de la tarea
+    function obtenerIconoEstado(estado) {
+        const iconos = {
+            Pendiente:
+                "<i class='fas fa-hourglass-start' style='color: darkorange;'></i>",
+            "En Progreso":
+                "<i class='fas fa-spinner' style='color: yellow;'></i>",
+            Completada:
+                "<i class='fas fa-check-circle' style='color: green;'></i>",
+        };
+        return iconos[estado] || "";
+    }
 
+    // Función para agregar tarea a la lista y al DOM
+    function agregarTarea(tarea) {
+        const $elemento = document.createElement("li");
+        $elemento.id = `tarea-${tarea.id}`;
+        $elemento.innerHTML = `
+            <p class="texto">${tarea.titulo}</p>
+            <span class="estado">${obtenerIconoEstado(tarea.estado)}</span>
+            <button class="eliminar" aria-label="eliminar-tarea" style="background: none; color: white; border: none;">
+                <i class="fas fa-trash" data-id="${tarea.id}"></i>
+            </button>
+            <button class="editar" aria-label="editar-tarea" style="background: none; color: white; border: none;">
+                <i class="fas fa-pen" data-id="${tarea.id}"></i>
+            </button>
+        `;
+        $lista.appendChild($elemento);
+    }
 
-document.addEventListener('keyup', function (event) {
-    if (event.key=='Enter'){
-        const tarea = input.value
-        if(tarea) {
-            agregarTarea(tarea,id,false,false)
-        LIST.push({
-            nombre : tarea,
-            id : id,
-            realizado : false,
-            eliminado : false,
-            editado: false
-        })
-        localStorage.setItem('TODO',JSON.stringify(LIST))
-     
-        input.value = ''
-        id++
-        console.log(LIST)
+    // Función para manejar el evento de agregar tarea
+    function manejarAgregarTarea() {
+        const tituloTarea = $entrada.value.trim();
+        if (validarEntrada(tituloTarea)) {
+            const nuevaTarea = {
+                titulo: tituloTarea,
+                estado: "Pendiente",
+                id: id++,
+            };
+            LIST.push(nuevaTarea);
+            renderizarTareas(); // Renderizamos las tareas inmediatamente
+            guardarTareas();
+            $entrada.value = "";
+        } else {
+            alert("Por favor, ingresa un título válido y único para la tarea.");
         }
     }
-    
-})
 
-
-lista.addEventListener('click',function(event){
-    const element = event.target 
-    const elementData = element.attributes.data.value
-    console.log(elementData)
-    
-    if(elementData == 'realizado') {
-        tareaRealizada(element)
-    }
-    if(elementData == 'eliminado') {
-        tareaEliminada(element)
-        console.log("eliminado")
+    // Función para ordenar las tareas alfabéticamente
+    function ordenarTareas() {
+        LIST.sort(function (a, b) {
+            return a.titulo.localeCompare(b.titulo);
+        });
+        renderizarTareas(); // Renderizamos las tareas inmediatamente
+        guardarTareas();
     }
 
-    else if(elementData == 'editado') {
-        tareaEditada(element)
-        console.log("editado")
+    // Función para abrir el modal con datos de la tarea
+    function abrirModal(tarea) {
+        $modal.dataset.index = tarea.id;
+        $tituloEditar.value = tarea.titulo || "";
+        $descripcionEditar.value = tarea.descripcion || "";
+        $estadoEditar.value = tarea.estado || "Pendiente";
+        $modal.style.display = "block";
     }
 
+    // Función para guardar cambios en el modal
+    function guardarCambios() {
+        const index = parseInt($modal.dataset.index, 10);
+        const tarea = LIST.find(function (t) {
+            return t.id === index;
+        });
+        tarea.titulo = $tituloEditar.value;
+        tarea.descripcion = $descripcionEditar.value;
+        tarea.estado = $estadoEditar.value;
+        guardarTareas();
+        renderizarTareas();
+        cerrarModal();
+    }
 
+    // Función para cerrar el modal
+    function cerrarModal() {
+        $modal.style.display = "none";
+        $modal.dataset.index = "";
+        $tituloEditar.value = "";
+        $descripcionEditar.value = "";
+        $estadoEditar.value = "Pendiente";
+    }
 
-    localStorage.setItem('TODO',JSON.stringify(LIST))
-})
+    // Función para renderizar todas las tareas
+    function renderizarTareas() {
+        $lista.innerHTML = LIST.map(function (tarea) {
+            return `
+                <li id="tarea-${tarea.id}">
+                    <p class="texto">${tarea.titulo}</p>
+                    <span class="estado">${obtenerIconoEstado(
+                        tarea.estado
+                    )}</span>
+                    <button class="eliminar" aria-label="eliminar-tarea" style="background: none; color: white; border: none;">
+                        <i class="fas fa-trash" data-id="${tarea.id}"></i>
+                    </button>
+                    <button class="editar" aria-label="editar-tarea" style="background: none; color: white; border: none;">
+                        <i class="fas fa-pen" data-id="${tarea.id}"></i>
+                    </button>
+                </li>
+            `;
+        }).join("");
+    }
 
+    // Función para guardar tareas en localStorage
+    function guardarTareas() {
+        localStorage.setItem("tareas", JSON.stringify(LIST));
+    }
 
+    // Función para cargar tareas desde localStorage al iniciar
+    function cargarTareas() {
+        const tareasGuardadas = localStorage.getItem("tareas");
+        if (tareasGuardadas) {
+            LIST = JSON.parse(tareasGuardadas).filter(function (t) {
+                return t.titulo;
+            });
+            id = LIST.length;
+            renderizarTareas();
+        }
+    }
 
+    // ...................................................Inicio de Eventos....................................................
+    // Evento para cambiar entre modo claro y oscuro
+    $botonModo.addEventListener("click", cambiarModo);
 
-let data = localStorage.getItem('TODO')
-if(data){
-    LIST = JSON.parse(data)
-    console.log(LIST)
-    id = LIST.length
-    cargarLista(LIST)
-}else {
-    LIST = []
-    id = 0
-}
+    // Eventos para agregar tarea al presionar Enter o hacer clic en el botón +
+    $botonAgregar.addEventListener("click", manejarAgregarTarea);
+    $entrada.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            manejarAgregarTarea();
+        }
+    });
 
+    // Evento para ordenar las tareas alfabéticamente
+    $botonOrdenar.addEventListener("click", ordenarTareas);
 
-function cargarLista(array) {
-    array.forEach(function(item){
-        agregarTarea(item.nombre,item.id,item.realizado,item.eliminado,item.editado)
-    })
-}
+    // Eventos para manejar la edición de tarea
+    $botonCerrar.addEventListener("click", cerrarModal);
+    $botonGuardarCambios.addEventListener("click", guardarCambios);
+    window.addEventListener("click", function (event) {
+        if (event.target === $modal) {
+            cerrarModal();
+        }
+    });
 
+    // Evento para detectar acciones en la lista (editar o eliminar)
+    $lista.addEventListener("click", function (event) {
+        const elemento = event.target;
+        const idElemento = parseInt(elemento.dataset.id, 10);
 
-// Modal
-const open = document.getElementById('open')
-const modal_container = document.getElementById('#modal_container');
-const close = document.getElementById('close')
+        if (elemento.classList.contains("fa-trash")) {
+            LIST = LIST.filter(function (tarea) {
+                return tarea.id !== idElemento;
+            });
+            renderizarTareas(); // Renderizamos las tareas inmediatamente
+            guardarTareas();
+        } else if (elemento.classList.contains("fa-pen")) {
+            const tarea = LIST.find(function (t) {
+                return t.id === idElemento;
+            });
+            abrirModal(tarea);
+        }
+    });
 
-open.addEventListener('click', () => {
-    modal_container.classList.add('show');
-});
-
-close.addEventListener('click', () => {
-    modal_container.classList.add('show');
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-///////////
-// Agregar tarea:
-
-
-  // function añadirTareas (titulo, estado) {
-  //   tareas.push ({Titulo: titulo, Estado: estado});
-  //   return tareas
-  // }
-  // console.log (añadirTareas("Estructurar html", "Ejecutar web"));
-  
-  // const añadirTareas = (estado) => {
-  // }
-  
-  // const progress = tareas.find ((obj) => {
-  // console.log(obj)
-  // tareas.Estado === "En progreso"
-  
-  // })
-  
-  // console.log (progress ("En progreso"))
-  
-
-
-  // Listar tareas
-
-
-  // const registrarTareas = (estado) => {
-  
-  //     if (estado === "En Progreso" || estado === "Pendiente" || estado === "Terminado") {
-  //         const registroTareas = tareas.filter(tareas => tareas.Estado === estado);
-  //         return registroTareas;
-  
-  //     } else {
-  //         return tareas;
-  //     }
-  // }
-  
-  // console.log(registrarTareas("Pendiente"))
-  
-  
-  // Agregar Verificación
-
-  
-  
-  // const añadirTareas = (titulo, estado) => {
-  // if (tareas[index].Titulo === titulo)  {
-  //   return "Alerta: La tarea ya existe"
-  // } else {
-  //   tareas.push({Titulo: titulo, Estado: estado})
-  //   return tareas
-  //   }
-  // }
-  
-
-  // ¿Existe tarea?
-
-  
-// const existeTarea = (str) => {
-
-// tareas.forEach(tarea => {
-//   if(tarea.Titulo.includes(str)) {
-//     tareasEncontradas.push(tarea)
-//   }
-// })
-// if(tareasFiltradas.length === 0) {
-//   return "No coinciden"
-// }
-// return tareasEncontradas
-// console.log(existeTarea("js"))
-
-// }
-
-
-
-// function $(elementoDeHtml) {
-//     return document.querySelector(elementoDeHtml)
-// }
-
-// window.addEventListener("load", () =>{
-    
-//     // Modal
-//     const $openButton = document.querySelector("#open-modal")
-//     const $containModal = document.querySelector(".contain-modal")
-//     const $closeButton = document.querySelector("#close-modal")
-   
-//     // Contenedor de tareas
-//     const $containPendient = document.querySelector(".contain-tareas")
-
-//     // Botones de filtrado
-//     const $filterPendient = document.querySelector("btn-filterPendient")
-//     const $filterInProgress = document.querySelector("btn-filterInProgress")
-//     const $filterFinish = document.querySelector("btn-filterFinish")
-
-
-//     // Eventos Modal  
-//     $openButton.addEventListener("click", (event) => {
-//         event.preventDefault();
-//         $containModal.classList.add("show-modal")
-//     })
-//     $closeButton.addEventListener("click", (event) => {
-//         event.preventDefault();
-//         $containModal.classList.remove("show-modal")
-//     }) 
-    
-//     $openButton.onClick = (event) => {
-//         event.preventDefault();
-//         $containModal.classList.add("show-modal")
-//     } 
-    
-//     })
+    // ......................................................Inicialización......................................................
+    cargarTareas();
+};
